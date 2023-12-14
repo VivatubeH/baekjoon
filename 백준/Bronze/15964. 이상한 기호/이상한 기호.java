@@ -4,9 +4,9 @@ class Main {
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
 
-		int a = in.nextInt();
-		int b = in.nextInt();
+		long A = in.nextInt();
+		int B = in.nextInt();
 		
-		System.out.println(a*a-b*b);
+		System.out.println((A+B)*(A-B));
 	}
 }
