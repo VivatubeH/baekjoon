@@ -1,14 +1,18 @@
 import java.util.Scanner;
 
-class Main {
+public class Main {
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
-
+		
 		int n = in.nextInt();
 		
-		for (int i=0; i<n/4;i++) {
-			System.out.print("long ");
+		int times = n/4;
+				
+		String how = "";
+		
+		for (int i = 1; i <= times; i++) {
+			how += "long ";
 		}
-		System.out.print("int");
+		System.out.println(how + "int");
 	}
 }
