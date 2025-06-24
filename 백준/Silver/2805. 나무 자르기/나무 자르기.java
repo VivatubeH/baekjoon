@@ -9,15 +9,16 @@ public class Main {
 
         st = new StringTokenizer(br.readLine());
 
-        ArrayList<Integer> trees = new ArrayList<>();
+        int[] trees = new int[N];
+        int max = 0;
+
         for (int i = 0; i < N; i++) {
-            trees.add(Integer.parseInt(st.nextToken()));
+            trees[i] = Integer.parseInt(st.nextToken());
+            if (max < trees[i]) max = trees[i];
         }
 
-        Collections.sort(trees);
-
         long bottom = 0;
-        long top = trees.get(trees.size() -1);
+        long top = max;
         long sum = 0;
         long answer = 0;
 
@@ -26,9 +27,9 @@ public class Main {
 
             long middle = (bottom + top) / 2;
 
-            for (int i = 0; i < trees.size(); i++) {
-                if (trees.get(i) > middle) {
-                    sum += trees.get(i) - middle;
+            for (int i = 0; i < N; i++) {
+                if (trees[i] > middle) {
+                    sum += trees[i] - middle;
                 }
             }
 
