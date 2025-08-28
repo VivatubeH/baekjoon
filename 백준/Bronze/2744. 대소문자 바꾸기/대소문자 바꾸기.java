@@ -1,23 +1,23 @@
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    public static char[] changeletters(String word){
-        char[] originalWord = word.toCharArray();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String input = br.readLine();
+        StringBuilder answer = new StringBuilder();
 
-        for (int i = 0; i < originalWord.length; i++) {
-            if (('a' <= originalWord[i]) && (originalWord[i] <= 'z')) { // 소문자면
-                originalWord[i] -= 'a' - 'A'; // 대문자로 바꾸고
-            } else { // 대문자면
-                originalWord[i] += 'a' - 'A'; // 소문자로 바꾼다.
+        for (int i = 0; i < input.length(); i++) {
+            char ch = input.charAt(i);
+
+            if (Character.isLowerCase(ch)) {
+                ch = Character.toUpperCase(ch);
+            } else if (Character.isUpperCase(ch)) {
+                ch = Character.toLowerCase(ch);
             }
-        }
-        return originalWord;
-    }
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in); // 문자열 입력을 받기위한 Scanner 객체 생성
 
-        String word = scanner.next();
-        char[] answer = changeletters(word);
-        System.out.println(answer);
+            answer.append(ch);
+        }
+        System.out.print(answer.toString());
     }
 }
