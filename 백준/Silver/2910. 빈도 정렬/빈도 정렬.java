@@ -29,12 +29,16 @@ public class Main {
 	public static void output() throws IOException {
 		List<Frequency> list = new ArrayList<>(map.values());
 		Collections.sort(list);
+	
+		StringBuilder sb = new StringBuilder();
 		try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out))) {
 			for (Frequency frequency : list) {
 				for (int i = 0; i < frequency.getFrequency(); i++) {
-					bw.write(String.valueOf(frequency.getNum()) + " ");
+					sb.append(frequency.getNum()).append(" ");
 				}
 			}
+			bw.write(sb.toString());
+			bw.flush();
 		}
 	}
 }
