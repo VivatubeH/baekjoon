@@ -2,59 +2,44 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		ArrayDeque<Character> open = new ArrayDeque<>();
-		
-		String str;
-		while (true) {
-			str = br.readLine();
-			
-			if (str.equals(".")) {
-				break;
-			}
-			
-			boolean isBalanced = true; 
-			
-			for (int i = 0; i < str.length(); i++) {
-				char ch = str.charAt(i);
-				
-				if (ch == '(' || ch == '[') {
-					open.offerLast(ch);
-				}
-				
-				if (ch == ')' || ch == ']') {
-					
-					if (open.size() == 0) {
-						isBalanced = false;
-						break;
-					}
-					
-					char last = open.pollLast();
-					
-					if (last == '(' && ch != ')') {
-						isBalanced = false;
-						break;
-					} 
-					if (last == '[' && ch != ']') {
-						isBalanced = false;
-						break;
-					}
-				}
-			}
-			
-			if (open.size() != 0) {
-				isBalanced = false;
-			}
-			
-			if (isBalanced) {
-				System.out.println("yes");
-			} else {
-				System.out.println("no");
-			}
-			
-			open.clear();
-		}
-		
-	}
+    public static StringBuilder answer = new StringBuilder();
+    public static void main(String[] args) throws IOException {
+        input();
+        System.out.print(answer);
+    }
+
+    public static void input() throws IOException {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
+            String input;
+            while (!(input = br.readLine()).equals(".")) {
+                boolean isBalanced = execute(input);
+                if (isBalanced) answer.append("yes");
+                else answer.append("no");
+                answer.append("\n");
+            }
+        }
+    }
+
+    public static boolean execute(String input) {
+        Deque<Character> stack = new ArrayDeque<>();
+        for (int i = 0; i < input.length(); i++) {
+            char ch = input.charAt(i);
+            if (ch == '(' || ch == '[') {
+                stack.push(ch);
+            } else if (ch == ')' || ch == ']') {
+                if (stack.isEmpty()) {
+                    return false;
+                } else {
+                    char currentInStack = stack.pop();
+                    if (currentInStack == '[') {
+                        if (ch == ')') return false;
+                    } else if (currentInStack == '(') {
+                        if (ch == ']') return false;
+                    }
+                }
+            }
+        }
+        if (!stack.isEmpty()) return false;
+        return true;
+    }
 }
