@@ -2,8 +2,9 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         int N = scanner.nextInt();
         int X = scanner.nextInt();
         int[] array = new int[N];
@@ -12,8 +13,9 @@ public class Main {
         }
         for (int i = 0; i < N; i++) {
             if (array[i] < X) {
-                System.out.print(array[i] + " ");
+                bw.write(array[i] + " ");
             }
         }
+        bw.flush();
     }
 }
