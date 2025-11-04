@@ -1,16 +1,19 @@
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
-class Main {
-	public static void main(String[] args) {
-		Scanner in = new Scanner(System.in);
-
-		int N  = in.nextInt();
-		int X = in.nextInt();
-		
-		int[] a = new int[N];
-		for ( int i =0; i<N; i++) {
-			a[i] = in.nextInt();
-			if ( a[i] < X) System.out.print(a[i]+" ");
-		}
-	}
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int N = scanner.nextInt();
+        int X = scanner.nextInt();
+        int[] array = new int[N];
+        for (int i = 0; i < N; i++) {
+            array[i] = scanner.nextInt();
+        }
+        for (int i = 0; i < N; i++) {
+            if (array[i] < X) {
+                System.out.print(array[i] + " ");
+            }
+        }
+    }
 }
