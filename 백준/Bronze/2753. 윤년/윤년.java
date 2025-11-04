@@ -1,13 +1,15 @@
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
-class Main {
-	public static void main(String[] args) {
-		Scanner scanner = new Scanner(System.in);
-		
-		int year = scanner.nextInt();
-		
-		if ( (year % 4 == 0) && (year % 100 != 0)) System.out.println(1);
-		else if ( year % 400 == 0) System.out.println(1);
-		else System.out.println(0);
-	}
+public class Main {
+    public static void main(String[] args) throws IOException {
+       Scanner scanner = new Scanner(System.in);
+       int year = scanner.nextInt();
+
+       if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) {
+           System.out.print(1);
+       } else {
+           System.out.print(0);
+       }
+    }
 }
