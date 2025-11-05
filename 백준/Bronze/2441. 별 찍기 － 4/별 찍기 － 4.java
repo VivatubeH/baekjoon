@@ -1,20 +1,18 @@
+import java.io.*;
 import java.util.*;
 
-class Main {
-	public static void main(String[] args) {
-	
-		Scanner in = new Scanner(System.in);
-		
-		final int N = in.nextInt(); 
-		for (int k=0;k<N;k++) { 
-			
-			for(int i=0;i<k;i++) { 
-				System.out.print(" ");
-			}
-			for(int j=0;j+k<N;j++) {
-				System.out.print("*");
-			}
-			System.out.println();
-		}
-	}
+public class Main {
+    public static void main(String[] args) throws IOException {
+        Scanner scanner = new Scanner(System.in);
+        int N = scanner.nextInt();
+        for (int i = 1; i <= N; i++) {
+            for (int j = 1; j <= i - 1; j++) {
+                System.out.print(" ");
+            }
+            for (int j = 1; j <= N - (i - 1); j++) {
+                System.out.print("*");
+            }
+            System.out.println();
+        }
+    }
 }
