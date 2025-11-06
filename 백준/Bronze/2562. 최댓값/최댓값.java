@@ -1,21 +1,19 @@
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
-	class Main {
-			public static void main(String[] args) {
-				Scanner in = new Scanner(System.in);
-
-				int[] a = new int[9];
-				int max = 0;
-				int index = 0;
-				
-				for(int i=0;i<a.length;i++) {
-					a[i] = in.nextInt();
-					if ( a[i] > max ) {
-						max = a[i];
-						index = i;
-					}
-				}
-				System.out.println(max);
-				System.out.println(index+1);
-			}
-	}
+public class Main {
+    public static void main(String[] args) throws IOException {
+        Scanner scanner = new Scanner(System.in);
+        int max = -1;
+        int maxIndex = 0;
+        for (int i = 1; i <= 9; i++) {
+            int current = scanner.nextInt();
+            if (current > max) {
+                max = current;
+                maxIndex = i;
+            }
+        }
+        System.out.println(max);
+        System.out.println(maxIndex);
+    }
+}
