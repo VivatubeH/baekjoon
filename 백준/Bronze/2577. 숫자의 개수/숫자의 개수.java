@@ -9,11 +9,11 @@ public class Main {
         int C = scanner.nextInt();
 
         int total = A * B * C;
-        String totalString = String.valueOf(total);
         int[] frequency = new int[10];
-        for (int i = 0; i < totalString.length(); i++) {
-            char ch = totalString.charAt(i);
-            frequency[ch - '0']++;
+
+        while (total > 0) {
+            frequency[total % 10]++;
+            total /= 10;
         }
         for (int i = 0; i < 10; i++) {
             System.out.println(frequency[i]);
