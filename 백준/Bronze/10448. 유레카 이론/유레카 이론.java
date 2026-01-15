@@ -33,12 +33,18 @@ public class Main {
     public static boolean isTriangle(int num) {
         // 3개의 삼각수가 서로 같아도 되기 때문에 인덱스를 중복을 허용해서 가져간다.
         for (int i = 1; i <= 50; i++) {
+            int num1 = triangle[i];
+            if (num1 > num) break;
             for (int j = 1; j <= 50; j++) {
+                int num2 = triangle[j];
+                if (num1 + num2 > num) break;
                 for (int k = 1; k <= 50; k++) {
+                    int num3 = triangle[k];
                     // 삼각수인 경우 true를 반환하고 종료
-                    if (triangle[i] + triangle[j] + triangle[k] == num) {
+                    if (num1 +num2 + num3 == num) {
                         return true;
                     }
+                    if (num1 + num2 + num3 > num) break;
                 }
             }
         }
