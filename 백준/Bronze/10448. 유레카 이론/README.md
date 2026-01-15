@@ -4,21 +4,21 @@
 
 ### 성능 요약
 
-메모리: 14760 KB, 시간: 144 ms
+메모리: 14536 KB, 시간: 140 ms
 
 ### 분류
 
-브루트포스 알고리즘, 수학
+수학, 브루트포스 알고리즘
 
 ### 제출 일자
 
-2025년 3월 25일 16:52:12
+2026년 1월 15일 19:03:45
 
 ### 문제 설명
 
 <p>삼각수 T<sub>n</sub>(n ≥ 1)는 [그림]에서와 같이 기하학적으로 일정한 모양의 규칙을 갖는 점들의 모음으로 표현될 수 있다.</p>
 
-<p style="text-align: center;"><img alt="" src=""></p>
+<p style="text-align: center;"><img alt="" src="https://www.acmicpc.net/upload/images2/eureka.png"></p>
 
 <p style="text-align: center;">[그림]</p>
 
