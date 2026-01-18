@@ -1,99 +1,76 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.*;
 
 public class Main {
+    public static int N; // 목판의 크기 N
+    public static boolean[][] isVertical; // 해당 칸을 수직으로 지났는지 체크
+    public static boolean[][] isHorizontal; // 해당 칸을 수평으로 지났는지 체크
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        // 사용자로부터 목판의 크기를 입력받습니다.
-        int N = Integer.parseInt(br.readLine());
-        // 목판은 최초에 모든 칸이 .으로 이루어집니다.
-        // N 크기의 목판을 만들고 목판을 .으로 전부 채워넣습니다.
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        char[][] woodBlock = new char[N][N];
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                woodBlock[i][j] = '.';
+        N = Integer.parseInt(br.readLine()); // 목판의 크기 N
+        isVertical = new boolean[N][N]; // 수직 체크판 생성
+        isHorizontal = new boolean[N][N]; // 수평 체크판 생성
+        // 로봇팔의 동작을 문자열로 입력받는다.
+        String move = br.readLine();
+        // 로봇팔을 동작시킨다.
+        moveRobot(move);
+        // 결과를 출력한다.
+        printResult();
+    }
+
+    // 로봇팔의 move를 통해 board에 기록한다.
+    public static void moveRobot(String move) {
+        // (0, 0)에서 동작 시작
+        int row = 0; // 로봇팔의 현재 row 좌표를 기록하기 위한 변수
+        int col = 0; // 로봇팔의 현재 col 좌표를 기록하기 위한 변수
+        // 0: 상(U), 1: 하(D), 2 : 좌(L), 3 : 우(R) 이동
+        int[] dmove = {-1, 1, -1, 1}; // 상하좌우 이동
+
+        for (int i = 0; i < move.length(); i++) { // 내부에서 row, col 갱신을 해야함
+            char currentMove = move.charAt(i); // 현재 동작
+            // 유효하지 않은 이동 반영 가능성, 항상 초기화
+            int nrow = row; // 로봇팔의 이동 시 row 좌표를 기록하기 위한 변수
+            int ncol = col; // 로봇팔의 이동 시 col 좌표를 기록하기 위한 변수
+            // 다음에 이동할 점의 좌표 구하기
+            if (currentMove == 'U') nrow = row + dmove[0];
+            else if (currentMove == 'D') nrow = row + dmove[1];
+            else if (currentMove == 'L') ncol = col + dmove[2];
+            else if (currentMove == 'R') ncol = col + dmove[3];
+            // 이동할 점이 유효하지 않을 때는 무시
+            if (nrow < 0 || nrow >= N || ncol < 0 || ncol >= N) continue;
+            // 유효할 때만 이전칸 (row, col)과 이동할 칸(nrow, ncol)을 갱신한다.
+            if (currentMove == 'U' || currentMove == 'D') { // 수직 방향 이동 시 수직 체크
+                isVertical[row][col] = true;
+                isVertical[nrow][ncol] = true;
+            } else if (currentMove == 'L' || currentMove == 'R') { // 수평 방향 이동 시 수평 체크
+                isHorizontal[row][col] = true;
+                isHorizontal[nrow][ncol] = true;
             }
+            // 다음 칸으로 이동한다.
+            row = nrow;
+            col = ncol;
         }
+    }
 
-        // 목판을 이동하기 위한 명령을 한 줄로 입력받습니다.
-        String moveInstructions = br.readLine();
-
-        // 목판의 현재 위치를 활용하기 위해 목판을 생성합니다.
-        WoodPlate plate = new WoodPlate();
-
-        // 명령에 따라 이동을 진행합니다.
-        for (int i = 0; i < moveInstructions.length(); i++) {
-            // 순서대로 명령을 실행하기 위해 instruction 변수에 담습니다.
-            char instruction = moveInstructions.charAt(i);
-
-            plate.moveRobotArms(woodBlock, instruction);
-        }
-
-        // 이동을 완료했으면 목판을 출력합니다.
+    public static void printResult() {
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                System.out.print(woodBlock[i][j]);
+                boolean vertical = isVertical[i][j];
+                boolean horizontal = isHorizontal[i][j];
+
+                if (vertical && horizontal) {
+                    System.out.print('+');
+                } else if (vertical) {
+                    System.out.print('|');
+                } else if (horizontal) {
+                    System.out.print('-');
+                } else {
+                    System.out.print('.');
+                }
             }
             System.out.println();
         }
-    }
-}
-
-class WoodPlate {
-    private static int currentRow = 0; // 현재 y 좌표를 구합니다.
-    private static int currentCol = 0; // 현재 x 좌표를 구합니다.
-    // 로봇팔을 이동시키는 명령을 입력받아서 로봇팔을 움직이면서 판자를 그립니다.
-    // 로봇팔 이동을 위해서 목판의 상태, 현재 몇 행 몇 열인지, 명령이 무엇인지를 받습니다.
-    public void moveRobotArms(char[][] woodBlock, char instruction) {
-        // 로직1. 만약 밖으로 나가는 명령인 경우 실행하지 않고 해당 메서드를 종료합니다.
-        if (currentCol == 0 && instruction == 'L') { // 왼쪽 끝인데 왼쪽으로 이동하는 명령
-            return;
-        } else if (currentCol == woodBlock.length - 1 && instruction == 'R') { // 오른쪽 끝인데 오른쪽으로 이동하는 명령
-            return;
-        } else if (currentRow == 0 && instruction == 'U') { // 위쪽 끝인데 위로 이동하는 명령
-            return;
-        } else if (currentRow == woodBlock.length - 1 && instruction == 'D') { // 아래쪽 끝인데 아래로 이동하는 명령
-            return;
-        }
-
-        // 로직2. 실제 이동을 수행합니다. ( 이 때 이동 전 칸의 목판과 이동 후 칸의 목판을 찍어줘야 합니다. )
-
-        // 이동전 목판을 찍습니다.
-        if (instruction == 'U' || instruction == 'D') { // 수직 이동의 경우
-            if (woodBlock[currentRow][currentCol] == '.') woodBlock[currentRow][currentCol] = '|';
-            else if (woodBlock[currentRow][currentCol] == '-') woodBlock[currentRow][currentCol] = '+';
-        } else if (instruction == 'R' || instruction == 'L') { // 수평 이동의 경우
-            if (woodBlock[currentRow][currentCol] == '.') woodBlock[currentRow][currentCol] = '-';
-            else if (woodBlock[currentRow][currentCol] == '|') woodBlock[currentRow][currentCol] = '+';
-        }
-
-        // 이동합니다.
-        switch (instruction) {
-            case 'U' :
-                currentRow--;
-                break;
-            case 'D' :
-                currentRow++;
-                break;
-            case 'L' :
-                currentCol--;
-                break;
-            case 'R' :
-                currentCol++;
-                break;
-        }
-
-        // 이동 후 목판도 찍습니다.
-        // 이동 전 목판 찍기와 당연히 코드는 동일합니다.
-        if (instruction == 'U' || instruction == 'D') { // 수직 이동의 경우
-            if (woodBlock[currentRow][currentCol] == '.') woodBlock[currentRow][currentCol] = '|';
-            else if (woodBlock[currentRow][currentCol] == '-') woodBlock[currentRow][currentCol] = '+';
-        } else if (instruction == 'R' || instruction == 'L') { // 수평 이동의 경우
-            if (woodBlock[currentRow][currentCol] == '.') woodBlock[currentRow][currentCol] = '-';
-            else if (woodBlock[currentRow][currentCol] == '|') woodBlock[currentRow][currentCol] = '+';
-        }
-
     }
 }
