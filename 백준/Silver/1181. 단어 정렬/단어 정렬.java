@@ -2,41 +2,20 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-	public static Set<String> set = new HashSet<>();
-	public static List<String> list = new ArrayList<>();
-	
-	public static void main(String[] args) throws IOException {
-		input();
-		service();
-		output();
-	}
-	
-	public static void input() throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int n = Integer.parseInt(br.readLine());
-		for (int i = 0; i < n; i++) {
-			set.add(br.readLine());
-		}
-	}
-	
-	public static void service() {
-		list = new ArrayList<>(set);
-		Collections.sort(list, new Comparator<>() {
-			public int compare(String s1, String s2) {
-				if (s1.length() != s2.length()) {
-					return s1.length() - s2.length();
-				}
-				return s1.compareTo(s2);
-			}
-		});
-	}
-	
-	public static void output() throws IOException {
-		BufferedWriter br = new BufferedWriter(new OutputStreamWriter(System.out));
-		for (String str : list) {
-			br.write(str);
-			br.write("\n");
-		}
-		br.flush();
-	}
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int N = Integer.parseInt(br.readLine()); // 단어의 개수 N개 ( 최대 2만개 )
+        Set<String> set = new HashSet<>(); // 단어 중복을 제거하기 위해 처음에 Set에 담음
+        for (int i = 0; i < N; i++) {
+            set.add(br.readLine()); // 한 줄씩 입력받아 Set에 담음
+        }
+        List<String> list = new ArrayList<>(set); // set을 list에 옮겨 담음.
+        list.sort((s1, s2) -> s1.length() != s2.length() ? s1.length() - s2.length() : s1.compareTo(s2)); 
+        for (String str : list) { // 인덱스를 안 쓰는 이유 = 중복을 제거했을 때 단어 개수가 N개가 아닐 수 있음
+            bw.write(str);
+            bw.newLine(); // 줄바꿈 처리하기
+        }
+        bw.flush(); // 출력
+    }
 }
