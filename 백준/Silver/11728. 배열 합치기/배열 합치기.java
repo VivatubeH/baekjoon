@@ -2,64 +2,51 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    public static int[] A;
-    public static int[] B;
-    public static List<Integer> list = new ArrayList<>();
-
     public static void main(String[] args) throws IOException {
-        input();
-        service();
-        output();
-    }
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer firstLine = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(firstLine.nextToken());
+        int M = Integer.parseInt(firstLine.nextToken());
 
-    public static void input() throws IOException {
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
-            StringTokenizer firstLine = new StringTokenizer(br.readLine());
-            A = new int[Integer.parseInt(firstLine.nextToken())];
-            B = new int[Integer.parseInt(firstLine.nextToken())];
-            StringTokenizer secondLine = new StringTokenizer(br.readLine());
-            for (int i = 0; i < A.length; i++) {
-                A[i] = Integer.parseInt(secondLine.nextToken());
-            }
-            StringTokenizer thirdLine = new StringTokenizer(br.readLine());
-            for (int j = 0; j < B.length; j++) {
-                B[j] = Integer.parseInt(thirdLine.nextToken());
-            }
+        int[] A = new int[N];
+        int[] B = new int[M];
+
+        StringTokenizer secondLine = new StringTokenizer(br.readLine());
+        StringTokenizer thirdLine = new StringTokenizer(br.readLine());
+        for (int i = 0; i < N; i++) {
+            A[i] = Integer.parseInt(secondLine.nextToken());
         }
-    }
+        for (int j = 0; j < M; j++) {
+            B[j] = Integer.parseInt(thirdLine.nextToken());
+        }
 
-    public static void service() {
-        int aIndex = 0;
-        int bIndex = 0;
+        Arrays.sort(A);
+        Arrays.sort(B);
 
-        while (aIndex < A.length && bIndex < B.length) {
-            if (A[aIndex] < B[bIndex]) {
-                list.add(A[aIndex]);
-                aIndex++;
-            } else if (A[aIndex] > B[bIndex]) {
-                list.add(B[bIndex]);
-                bIndex++;
+        int p1 = 0;
+        int p2 = 0;
+
+        while (p1 < N && p2 < M) { // 둘 중 하나의 출력이 끝날때까지 수행한다.
+            if (A[p1] < B[p2]) {
+                bw.write(A[p1++] + " ");
+            } else if (A[p1] > B[p2]){
+                bw.write(B[p2++] + " ");
             } else {
-                list.add(A[aIndex]);
-                list.add(B[bIndex]);
-                aIndex++;
-                bIndex++;
+                bw.write(A[p1++] + " " + B[p2++] + " ");
             }
         }
 
-        for (int i = bIndex; i < B.length; i++) {
-            list.add(B[i]);
+        // 둘 중 하나는 출력이 끝났으므로 순서가 잘못되지 않는다.
+        for (int i = p1; i < N; i++) {
+            bw.write(A[i] + " ");
         }
-        for (int j = aIndex; j < A.length; j++) {
-            list.add(A[j]);
+        for (int j = p2; j < M; j++) {
+            bw.write(B[j] + " ");
         }
-    }
 
-    public static void output() {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < list.size(); i++) {
-            sb.append(list.get(i)).append(" ");
-        }
-        System.out.print(sb);
+        bw.flush();
+
+        bw.flush();
     }
 }
