@@ -2,67 +2,52 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    public static StringBuilder answer = new StringBuilder();
-
     public static void main(String[] args) throws IOException {
-        input();
-        output();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        int T = Integer.parseInt(br.readLine());
+        for (int i = 0; i < T; i++) {
+            String word = br.readLine();
+            int result = check(word, 0, word.length() - 1);
+            bw.write(result + "\n");
+        }
+        bw.flush();
     }
 
-    public static void input() throws IOException {
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
-            int N = Integer.parseInt(br.readLine());
-            for (int i = 0; i < N; i++) {
-                String word = br.readLine();
-                int result = service(word);
-                answer.append(result).append("\n");
-            }
-        }
-    }
-
-    public static int service(String word) {
-        if (isPalindrome(word)) {
-            return 0;
-        }
-        int leftIndex = 0;
-        int rightIndex = word.length() - 1;
-        while (leftIndex < rightIndex) {
-            if (word.charAt(leftIndex) != word.charAt(rightIndex)) {
-                break;
-            }
-            leftIndex++;
-            rightIndex--;
-        }
-        String subStr = word.substring(leftIndex, rightIndex + 1);
-
-        String candidate1 = subStr.substring(1);
-        String candidate2 = subStr.substring(0, subStr.length() - 1);
-        if (isPalindrome(candidate1) || isPalindrome(candidate2)) {
-            return 1;
-        }
-
-        return 2;
-    }
-
-    public static boolean isPalindrome(String word) {
-        int left = 0;
-        int right = word.length() - 1;
-
+    // 회문이면 0, 유사회문이면 1, 둘 다 아니면 2를 반환하는 메서드
+    public static int check(String word, int left, int right) {
         while (left < right) {
-            char leftChar = word.charAt(left);
-            char rightChar = word.charAt(right);
+            char leftCh = word.charAt(left);
+            char rightCh = word.charAt(right);
 
-            if (leftChar != rightChar) {
+            // 회문 0이 아니면
+            if (leftCh != rightCh) {
+                // 왼족 문자를 삭제해서 회문이거나, 오른쪽 문자를 삭제해서 회문이면 유사 회문
+                if (isPalindrome(word, left + 1, right) || isPalindrome(word, left, right - 1)) {
+                    return 1;
+                }
+                // 둘다 거짓이면 유사회문도 아니므로
+                else {
+                    return 2;
+                }
+            }
+
+            left++;
+            right--;
+        }
+        return 0; // 마지막까지 돌아가면 회문이다.
+    }
+
+    // 회문인지를 체크하는 메서드
+    public static boolean isPalindrome(String word, int left, int right) {
+        while (left < right) {
+            if (word.charAt(left) != word.charAt(right)) {
                 return false;
             }
             left++;
             right--;
         }
-
         return true;
-    }
-
-    public static void output() {
-        System.out.print(answer);
     }
 }
