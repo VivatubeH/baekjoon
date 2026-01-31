@@ -1,64 +1,61 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 public class Main {
-    // 정답을 이어붙여서 한 번에 출력하겠습니다.
-    static StringBuilder answer = new StringBuilder();
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int test = Integer.parseInt(br.readLine()); // 테스트 케이스의 수
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int T = Integer.parseInt(br.readLine());
+        Queue<Document> queue = new ArrayDeque<>();
 
-        // test개의 테스트 케이스에 대해 프로그램 실행
-        for (int i = 0; i < test; i++) {
+        for (int i = 0; i < T; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            int N = Integer.parseInt(st.nextToken()); // 문서의 개수
-            int M = Integer.parseInt(st.nextToken()); // 목표가 되는 인덱스
+            int N = Integer.parseInt(st.nextToken());
+            int M = Integer.parseInt(st.nextToken());
 
-            Deque<Document> deque = new ArrayDeque<>();
             st = new StringTokenizer(br.readLine());
-            for (int j = 0; j < N; j++) {
-                deque.offerLast(new Document(Integer.parseInt(st.nextToken()), j));
+            for (int index = 0; index < N; index++) {
+                int priority = Integer.parseInt(st.nextToken());
+                Document document = new Document(index, priority);
+                queue.offer(document);
             }
-            answer.append(getPrintOrder(M, deque)).append("\n");
-        }
 
-        System.out.print(answer);
-    }
+            int count = 0;
+            while (!queue.isEmpty()) {
+                Document current = queue.poll();
+                int currentPriority = current.priority;
 
-    // 타겟 인덱스와 배열을 전달받아서 -> 조작된 타겟인덱스 + 1을 반환해야 함 ( 0부터 시작 )
-    public static int getPrintOrder(int num, Deque<Document> deque) {
-        int targetIndex = num;
-        int printCount = 0;
+                boolean isCanPrint = true;
 
-        while(true) {
-            Document first = deque.pollFirst();
-            boolean hasHigherPriority = false;
-            for (Document doc : deque) {
-                if (doc.priority > first.priority) {
-                    hasHigherPriority = true;
-                    break;
+                for (Document other : queue) {
+                    if (other.priority > currentPriority) {
+                        isCanPrint = false;
+                        break;
+                    }
+                }
+
+                if (isCanPrint) {
+                    count++;
+                    if (current.index == M) {
+                        bw.write(count + "\n");
+                        break;
+                    }
+                } else {
+                    queue.offer(current);
                 }
             }
-            if (hasHigherPriority) {
-                deque.offerLast(first);
-            } else {
-                printCount++;
-                if (first.index == targetIndex) {
-                    break;
-                }
-            }
+            queue.clear();
         }
-        return printCount;
+        bw.flush();
     }
 }
 
 class Document {
-    int priority;
     int index;
+    int priority;
 
-    Document(int priority, int index) {
-        this.priority = priority;
+    Document(int index, int priority) {
         this.index = index;
+        this.priority = priority;
     }
 }
