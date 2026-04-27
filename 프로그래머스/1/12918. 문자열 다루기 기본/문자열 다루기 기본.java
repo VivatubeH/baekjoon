@@ -6,7 +6,7 @@ class Solution {
         }
         // 숫자가 아닌 게 존재하면 false 반환
         for (int i = 0; i < s.length(); i++) {
-            if (!((s.charAt(i) >= '0') && (s.charAt(i) <= '9'))) {
+            if (!(s.charAt(i) >= '0' && s.charAt(i) <= '9')) {
                 return false;
             }
         }
